@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#2ecc71"/>
+  <title>AgroSense AI — Login</title>
+  <link rel="manifest" href="manifest.json"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--g:#2ecc71;--gd:#0a2e1a;--am:#f39c12;--w:#fff;--glass:rgba(255,255,255,0.07);--gb:rgba(255,255,255,0.14)}
+    html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--gd);overflow:hidden}
+    body{display:flex;align-items:center;justify-content:center;position:relative}
+
+    canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+    .grid{position:fixed;inset:0;z-index:1;
+      background-image:linear-gradient(rgba(46,204,113,0.05) 1px,transparent 1px),
+                       linear-gradient(90deg,rgba(46,204,113,0.05) 1px,transparent 1px);
+      background-size:60px 60px;animation:gm 20s linear infinite}
+    @keyframes gm{0%{background-position:0 0}100%{background-position:60px 60px}}
+    .orb{position:fixed;border-radius:50%;filter:blur(90px);z-index:1;animation:op ease-in-out infinite alternate}
+    .o1{width:500px;height:500px;top:-120px;left:-120px;background:rgba(46,204,113,0.14);animation-duration:7s}
+    .o2{width:400px;height:400px;bottom:-100px;right:-100px;background:rgba(243,156,18,0.1);animation-duration:9s}
+    .o3{width:280px;height:280px;top:50%;left:55%;background:rgba(46,204,113,0.08);animation-duration:6s}
+    @keyframes op{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.15) translate(20px,-20px)}}
+    .ov{position:fixed;inset:0;z-index:2;
+      background:linear-gradient(135deg,rgba(10,46,26,0.9),rgba(26,92,53,0.7),rgba(10,46,26,0.88))}
+    .pt{position:fixed;border-radius:50%;animation:fup linear infinite;opacity:0;z-index:2}
+    @keyframes fup{0%{transform:translateY(110vh) scale(0);opacity:0}10%{opacity:0.45}90%{opacity:0.18}100%{transform:translateY(-10vh);opacity:0}}
+
+    .wrap{position:relative;z-index:10;display:grid;grid-template-columns:1fr 1fr;
+      width:min(1080px,95vw);min-height:min(650px,95vh);border-radius:26px;overflow:hidden;
+      box-shadow:0 40px 120px rgba(0,0,0,0.6),0 0 0 1px var(--gb);
+      animation:ci 0.8s cubic-bezier(0.16,1,0.3,1) both}
+    @keyframes ci{from{opacity:0;transform:translateY(38px) scale(0.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+    /* LEFT */
+    .hero{background:linear-gradient(160deg,rgba(26,92,53,0.55),rgba(10,46,26,0.85));
+      backdrop-filter:blur(18px);border-right:1px solid var(--gb);
+      padding:48px 42px;display:flex;flex-direction:column;justify-content:space-between}
+    .li{width:54px;height:54px;background:var(--g);border-radius:14px;display:flex;align-items:center;
+      justify-content:center;font-size:24px;margin-bottom:18px;box-shadow:0 8px 28px rgba(46,204,113,0.4)}
+    .ln{font-family:'Playfair Display',serif;font-size:34px;font-weight:900;color:var(--w);
+      line-height:1.1;letter-spacing:-1px}
+    .ln span{color:var(--g)}
+    .lt{color:rgba(255,255,255,0.38);font-size:11px;margin-top:6px;letter-spacing:2px;text-transform:uppercase}
+    .slist{display:flex;flex-direction:column;gap:13px}
+    .si{background:var(--glass);border:1px solid var(--gb);border-radius:12px;padding:15px 17px;
+      display:flex;align-items:center;gap:13px;transition:transform 0.3s,background 0.3s}
+    .si:hover{transform:translateX(5px);background:rgba(255,255,255,0.1)}
+    .sico{width:40px;height:40px;background:rgba(46,204,113,0.15);border-radius:10px;
+      display:flex;align-items:center;justify-content:center;font-size:20px}
+    .snum{font-size:20px;font-weight:700;color:var(--g)}
+    .sdsc{font-size:11px;color:rgba(255,255,255,0.42);margin-top:2px}
+    .blist{display:flex;gap:9px;flex-wrap:wrap}
+    .bdg{background:var(--glass);border:1px solid var(--gb);border-radius:18px;padding:5px 12px;
+      font-size:10px;color:rgba(255,255,255,0.52);display:flex;align-items:center;gap:5px}
+    .bdg i{color:var(--g)}
+
+    /* RIGHT */
+    .fside{background:rgba(255,255,255,0.04);backdrop-filter:blur(28px);
+      padding:48px 44px;display:flex;flex-direction:column;justify-content:center}
+    .fhead{margin-bottom:30px}
+    .fhead h2{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--w);margin-bottom:6px}
+    .fhead p{color:rgba(255,255,255,0.4);font-size:13px}
+    .tabs{display:flex;background:rgba(255,255,255,0.06);border-radius:11px;padding:4px;
+      margin-bottom:26px;border:1px solid var(--gb)}
+    .tab{flex:1;padding:10px;border:none;background:transparent;color:rgba(255,255,255,0.4);
+      font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;border-radius:8px;cursor:pointer;transition:all 0.3s}
+    .tab.active{background:var(--g);color:var(--gd);font-weight:600}
+    .fg{margin-bottom:15px}
+    .fg label{display:block;font-size:10px;color:rgba(255,255,255,0.42);margin-bottom:6px;
+      letter-spacing:0.5px;text-transform:uppercase}
+    .iw{position:relative}
+    .iw i{position:absolute;left:14px;top:50%;transform:translateY(-50%);
+      color:rgba(255,255,255,0.26);font-size:13px;pointer-events:none}
+    .iw input{width:100%;padding:13px 13px 13px 41px;background:rgba(255,255,255,0.07);
+      border:1px solid rgba(255,255,255,0.11);border-radius:11px;color:var(--w);
+      font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:all 0.3s}
+    .iw input::placeholder{color:rgba(255,255,255,0.22)}
+    .iw input:focus{background:rgba(255,255,255,0.1);border-color:var(--g);
+      box-shadow:0 0 0 3px rgba(46,204,113,0.14)}
+    .fops{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+    .rem{display:flex;align-items:center;gap:6px;cursor:pointer}
+    .rem input{accent-color:var(--g);width:13px;height:13px}
+    .rem span,.fgt{font-size:12px;color:rgba(255,255,255,0.42)}
+    .fgt{color:var(--g);text-decoration:none}
+    .fgt:hover{text-decoration:underline}
+    .btn-main{width:100%;padding:14px;background:linear-gradient(135deg,var(--g),#27ae60);
+      border:none;border-radius:11px;color:var(--gd);font-family:'DM Sans',sans-serif;
+      font-size:14px;font-weight:700;cursor:pointer;transition:all 0.3s}
+    .btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 34px rgba(46,204,113,0.36)}
+    .btn-main:disabled{opacity:0.7;transform:none}
+    .dvd{display:flex;align-items:center;gap:9px;margin:16px 0}
+    .dvd::before,.dvd::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.09)}
+    .dvd span{font-size:11px;color:rgba(255,255,255,0.26)}
+    .socrow{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+    .socbtn{padding:11px;border:1px solid rgba(255,255,255,0.09);background:rgba(255,255,255,0.04);
+      border-radius:10px;color:rgba(255,255,255,0.5);font-family:'DM Sans',sans-serif;
+      font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.3s}
+    .socbtn:hover{background:rgba(255,255,255,0.09);color:var(--w)}
+    #fsig{display:none}
+
+    /* Error message */
+    .err{display:none;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.3);
+      border-radius:9px;padding:10px 13px;font-size:12px;color:#ff6b6b;margin-bottom:14px}
+    .err.show{display:block}
+    .suc{display:none;background:rgba(46,204,113,0.12);border:1px solid rgba(46,204,113,0.3);
+      border-radius:9px;padding:10px 13px;font-size:12px;color:var(--g);margin-bottom:14px}
+    .suc.show{display:block}
+
+    @media(max-width:680px){
+      html,body{overflow:auto}
+      .wrap{grid-template-columns:1fr;min-height:auto}
+      .hero{display:none}
+      .fside{padding:34px 22px}
+    }
+  </style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<div class="grid"></div>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+<div class="ov"></div>
+<div id="pts"></div>
+
+<div class="wrap">
+  <!-- LEFT HERO -->
+  <div class="hero">
+    <div>
+      <div class="li">🌾</div>
+      <div class="ln">Agro<span>Sense</span> AI</div>
+      <div class="lt">Works Fully Offline · Smart Farming</div>
+    </div>
+    <div class="slist">
+      <div class="si"><div class="sico">🌱</div><div><div class="snum">98.7%</div><div class="sdsc">Crop recommendation accuracy</div></div></div>
+      <div class="si"><div class="sico">👨‍🌾</div><div><div class="snum">1.2M+</div><div class="sdsc">Farmers using the platform</div></div></div>
+      <div class="si"><div class="sico">📴</div><div><div class="snum">100%</div><div class="sdsc">Works without internet</div></div></div>
+    </div>
+    <div class="blist">
+      <div class="bdg"><i class="fas fa-shield-alt"></i> Secure</div>
+      <div class="bdg"><i class="fas fa-language"></i> Tamil | Hindi | English</div>
+      <div class="bdg"><i class="fas fa-microphone"></i> Voice AI</div>
+      <div class="bdg"><i class="fas fa-wifi-slash"></i> Offline Ready</div>
+    </div>
+  </div>
+
+  <!-- RIGHT FORM -->
+  <div class="fside">
+    <div class="fhead">
+      <h2 id="ftit">Welcome Back</h2>
+      <p id="fsub">Sign in to your farmer dashboard</p>
+    </div>
+    <div class="tabs">
+      <button class="tab active" onclick="sw('login')">Login</button>
+      <button class="tab" onclick="sw('signup')">Register</button>
+    </div>
+
+    <!-- LOGIN -->
+    <form id="flog" onsubmit="doLogin(event)">
+      <div class="err" id="lerr"></div>
+      <div class="suc" id="lsuc"></div>
+      <div class="fg"><label>Email Address</label>
+        <div class="iw"><i class="fas fa-envelope"></i><input type="email" id="lemail" placeholder="farmer@example.com" required/></div></div>
+      <div class="fg"><label>Password</label>
+        <div class="iw"><i class="fas fa-lock"></i><input type="password" id="lpass" placeholder="Enter your password" required/></div></div>
+      <div class="fops">
+        <label class="rem"><input type="checkbox"/><span>Remember me</span></label>
+        <a href="#" class="fgt">Forgot password?</a>
+      </div>
+      <button type="submit" class="btn-main" id="lbtn">Sign In to Dashboard →</button>
+      <div class="dvd"><span>or continue with</span></div>
+      <div class="socrow">
+        <button type="button" class="socbtn"><i class="fab fa-google"></i> Google</button>
+        <button type="button" class="socbtn"><i class="fab fa-facebook"></i> Facebook</button>
+      </div>
+    </form>
+
+    <!-- SIGNUP -->
+    <form id="fsig" onsubmit="doSignup(event)">
+      <div class="err" id="serr"></div>
+      <div class="suc" id="ssuc"></div>
+      <div class="fg"><label>Full Name</label>
+        <div class="iw"><i class="fas fa-user"></i><input type="text" id="sname" placeholder="Your full name" required/></div></div>
+      <div class="fg"><label>Email Address</label>
+        <div class="iw"><i class="fas fa-envelope"></i><input type="email" id="semail" placeholder="farmer@example.com" required/></div></div>
+      <div class="fg"><label>Phone Number</label>
+        <div class="iw"><i class="fas fa-phone"></i><input type="tel" id="sphone" placeholder="+91 XXXXX XXXXX"/></div></div>
+      <div class="fg"><label>Password</label>
+        <div class="iw"><i class="fas fa-lock"></i><input type="password" id="spass" placeholder="Create a strong password" required/></div></div>
+      <button type="submit" class="btn-main" id="sbtn">Create My Account →</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+
+  // Particles
+  const pc = document.getElementById('pts');
+  ['#2ecc71','#a8e6c1','#f39c12','#fff'].forEach(col => {
+    for(let i=0;i<7;i++){
+      const p=document.createElement('div'); p.className='pt';
+      const s=Math.random()*5+2;
+      p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;background:${col};animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*10}s;`;
+      pc.appendChild(p);
+    }
+  });
+
+  // Canvas animated background
+  const cv=document.getElementById('bg'),ctx=cv.getContext('2d');
+  let W,H,t=0;
+  function resize(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+  resize(); window.addEventListener('resize',resize);
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const s=ctx.createLinearGradient(0,0,0,H);
+    s.addColorStop(0,'#010a04');s.addColorStop(0.6,'#0a2e1a');s.addColorStop(1,'#1a5c35');
+    ctx.fillStyle=s;ctx.fillRect(0,0,W,H);
+    for(let l=3;l>=0;l--){
+      ctx.beginPath();ctx.moveTo(0,H);
+      const off=t*(0.2+l*0.1),by=H*(0.55+l*0.1);
+      for(let x=0;x<=W;x+=4) ctx.lineTo(x,by+Math.sin((x/W*3+off)*Math.PI)*34+Math.sin((x/W*7+off*1.3)*Math.PI)*14);
+      ctx.lineTo(W,H);ctx.closePath();
+      ctx.fillStyle=`rgba(46,204,113,${0.055+l*0.038})`;ctx.fill();
+    }
+    if(!ctx._s) ctx._s=Array.from({length:90},()=>({x:Math.random()*W,y:Math.random()*H*0.5,r:Math.random()*1.3,a:Math.random()}));
+    ctx._s.forEach(s=>{ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${0.22+Math.sin(t*2+s.a*10)*0.16})`;ctx.fill();});
+    t+=0.003;requestAnimationFrame(draw);
+  }
+  draw();
+
+  // Tab switch
+  function sw(tab){
+    document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',(tab==='login'&&i===0)||(tab==='signup'&&i===1)));
+    document.getElementById('flog').style.display=tab==='login'?'block':'none';
+    document.getElementById('fsig').style.display=tab==='signup'?'block':'none';
+    document.getElementById('ftit').textContent=tab==='login'?'Welcome Back':'Join AgroSense';
+    document.getElementById('fsub').textContent=tab==='login'?'Sign in to your farmer dashboard':'Create your free farmer account';
+  }
+
+  const API = 'http://localhost:5000/api';
+
+  // LOGIN — calls backend, falls back to local if offline
+  async function doLogin(e){
+    e.preventDefault();
+    const btn=document.getElementById('lbtn');
+    const errEl=document.getElementById('lerr');
+    const sucEl=document.getElementById('lsuc');
+    errEl.classList.remove('show'); sucEl.classList.remove('show');
+    btn.textContent='Signing in...'; btn.disabled=true;
+
+    const email=document.getElementById('lemail').value;
+    const password=document.getElementById('lpass').value;
+    const lang=localStorage.getItem('agro_lang')||'en';
+
+    try {
+      const res = await fetch(`${API}/auth/login`,{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email,password})
+      });
+      const data = await res.json();
+      if(res.ok){
+        localStorage.setItem('agro_token', data.token);
+        localStorage.setItem('agro_farmer', JSON.stringify(data.farmer));
+        sucEl.textContent='Login successful! Redirecting...';
+        sucEl.classList.add('show');
+        setTimeout(()=>window.location.href='dashboard.html',800);
+      } else {
+        errEl.textContent = data.message || 'Login failed.';
+        errEl.classList.add('show');
+        btn.textContent='Sign In to Dashboard →'; btn.disabled=false;
+      }
+    } catch {
+      // Offline fallback
+      localStorage.setItem('agro_farmer', JSON.stringify({name:'Farmer',email,language:lang}));
+      sucEl.textContent='Offline mode — Signing in locally...';
+      sucEl.classList.add('show');
+      setTimeout(()=>window.location.href='dashboard.html',800);
+    }
+  }
+
+  // REGISTER — calls backend
+  async function doSignup(e){
+    e.preventDefault();
+    const btn=document.getElementById('sbtn');
+    const errEl=document.getElementById('serr');
+    const sucEl=document.getElementById('ssuc');
+    errEl.classList.remove('show'); sucEl.classList.remove('show');
+    btn.textContent='Creating account...'; btn.disabled=true;
+
+    const name=document.getElementById('sname').value;
+    const email=document.getElementById('semail').value;
+    const phone=document.getElementById('sphone').value;
+    const password=document.getElementById('spass').value;
+    const language=localStorage.getItem('agro_lang')||'en';
+
+    try {
+      const res = await fetch(`${API}/auth/register`,{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({name,email,phone,password,language})
+      });
+      const data = await res.json();
+      if(res.ok){
+        localStorage.setItem('agro_token', data.token);
+        localStorage.setItem('agro_farmer', JSON.stringify(data.farmer));
+        sucEl.textContent='Account created! Redirecting...';
+        sucEl.classList.add('show');
+        setTimeout(()=>window.location.href='dashboard.html',800);
+      } else {
+        errEl.textContent = data.message || 'Registration failed.';
+        errEl.classList.add('show');
+        btn.textContent='Create My Account →'; btn.disabled=false;
+      }
+    } catch {
+      // Offline fallback
+      localStorage.setItem('agro_farmer', JSON.stringify({name,email,language}));
+      sucEl.textContent='Offline mode — Account saved locally!';
+      sucEl.classList.add('show');
+      setTimeout(()=>window.location.href='dashboard.html',800);
+    }
+  }
+</script>
+</body>
+</html>

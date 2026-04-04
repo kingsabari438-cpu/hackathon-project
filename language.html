@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#2ecc71"/>
+  <title>AgroSense AI — Choose Language</title>
+  <link rel="manifest" href="manifest.json"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--g:#2ecc71;--gd:#0a2e1a;--am:#f39c12;--w:#fff}
+    html,body{height:100%;font-family:'DM Sans',sans-serif;background:var(--gd);overflow:hidden}
+    body{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+
+    .bg{position:fixed;inset:0;z-index:0;
+      background:radial-gradient(ellipse at 30% 40%,rgba(46,204,113,0.15) 0%,transparent 60%),
+                 radial-gradient(ellipse at 80% 70%,rgba(243,156,18,0.1) 0%,transparent 50%),
+                 linear-gradient(160deg,#020d06 0%,#0a2e1a 50%,#0d3d22 100%)}
+    .grid{position:fixed;inset:0;z-index:1;
+      background-image:linear-gradient(rgba(46,204,113,0.05) 1px,transparent 1px),
+                       linear-gradient(90deg,rgba(46,204,113,0.05) 1px,transparent 1px);
+      background-size:50px 50px;animation:gm 20s linear infinite}
+    @keyframes gm{0%{background-position:0 0}100%{background-position:50px 50px}}
+    .orb{position:fixed;border-radius:50%;filter:blur(80px);z-index:1;animation:op ease-in-out infinite alternate}
+    .o1{width:500px;height:500px;top:-110px;left:-110px;background:rgba(46,204,113,0.13);animation-duration:7s}
+    .o2{width:360px;height:360px;bottom:-90px;right:-90px;background:rgba(243,156,18,0.1);animation-duration:9s}
+    @keyframes op{0%{transform:scale(1)}100%{transform:scale(1.15) translate(15px,-15px)}}
+
+    .content{position:relative;z-index:10;text-align:center;padding:30px 20px;
+      animation:fu 0.8s cubic-bezier(0.16,1,0.3,1) both}
+    @keyframes fu{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+    .logo{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;color:var(--w);letter-spacing:-1px}
+    .logo span{color:var(--g)}
+    .tag{color:rgba(255,255,255,0.35);font-size:12px;letter-spacing:2.5px;text-transform:uppercase;margin-top:6px;margin-bottom:48px}
+
+    .lang-title{font-size:20px;color:rgba(255,255,255,0.75);margin-bottom:8px}
+    .lang-hint{font-size:14px;color:rgba(255,255,255,0.32);margin-bottom:38px}
+
+    .lang-grid{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:44px}
+    .lcard{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:22px;
+      padding:34px 30px;cursor:pointer;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);
+      width:205px;position:relative;overflow:hidden}
+    .lcard::before{content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,rgba(46,204,113,0.1),transparent);opacity:0;transition:opacity 0.3s}
+    .lcard:hover{transform:translateY(-8px);border-color:var(--g);box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+    .lcard:hover::before,.lcard.sel::before{opacity:1}
+    .lcard.sel{border-color:var(--g);background:rgba(46,204,113,0.12);transform:translateY(-8px)}
+    .chk{position:absolute;top:13px;right:13px;background:var(--g);color:var(--gd);border-radius:50%;
+      width:26px;height:26px;display:flex;align-items:center;justify-content:center;
+      font-size:11px;font-weight:700;opacity:0;transition:opacity 0.3s}
+    .lcard.sel .chk{opacity:1}
+    .lflag{font-size:50px;margin-bottom:13px;display:block}
+    .lname{font-family:'Playfair Display',serif;font-size:23px;font-weight:700;color:var(--w);margin-bottom:5px}
+    .lnat{font-size:18px;color:var(--g);font-weight:500;margin-bottom:7px}
+    .ldesc{font-size:11px;color:rgba(255,255,255,0.28)}
+
+    .btn-go{padding:16px 50px;background:linear-gradient(135deg,var(--g),#27ae60);
+      border:none;border-radius:14px;color:var(--gd);font-family:'DM Sans',sans-serif;
+      font-size:15px;font-weight:700;cursor:pointer;transition:all 0.3s;
+      opacity:0.35;pointer-events:none}
+    .btn-go.ready{opacity:1;pointer-events:all}
+    .btn-go.ready:hover{transform:translateY(-3px);box-shadow:0 14px 42px rgba(46,204,113,0.38)}
+
+    @media(max-width:600px){
+      .lang-grid{gap:12px}
+      .lcard{width:calc(50% - 6px);padding:22px 14px}
+      .logo{font-size:34px}
+    }
+  </style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="grid"></div>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+
+<div class="content">
+  <div class="logo">Agro<span>Sense</span> AI</div>
+  <div class="tag">Smart Farming Platform · Works Offline</div>
+
+  <div class="lang-title">Choose your preferred language</div>
+  <div class="lang-hint">மொழியை தேர்ந்தெடுக்கவும் &nbsp;•&nbsp; भाषा चुनें</div>
+
+  <div class="lang-grid">
+    <div class="lcard" onclick="pick('en',this)">
+      <div class="chk"><i class="fas fa-check"></i></div>
+      <span class="lflag">🇬🇧</span>
+      <div class="lname">English</div>
+      <div class="lnat">English</div>
+      <div class="ldesc">Full platform in English</div>
+    </div>
+    <div class="lcard" onclick="pick('ta',this)">
+      <div class="chk"><i class="fas fa-check"></i></div>
+      <span class="lflag">🇮🇳</span>
+      <div class="lname">Tamil</div>
+      <div class="lnat">தமிழ்</div>
+      <div class="ldesc">முழு தளமும் தமிழில்</div>
+    </div>
+    <div class="lcard" onclick="pick('hi',this)">
+      <div class="chk"><i class="fas fa-check"></i></div>
+      <span class="lflag">🇮🇳</span>
+      <div class="lname">Hindi</div>
+      <div class="lnat">हिन्दी</div>
+      <div class="ldesc">पूरा प्लेटफॉर्म हिंदी में</div>
+    </div>
+  </div>
+
+  <button class="btn-go" id="goBtn" onclick="goNext()">Continue to Login →</button>
+</div>
+
+<script>
+  if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+
+  let lang = null;
+  function pick(l, el) {
+    document.querySelectorAll('.lcard').forEach(c => c.classList.remove('sel'));
+    el.classList.add('sel');
+    lang = l;
+    localStorage.setItem('agro_lang', l);
+    const btn = document.getElementById('goBtn');
+    btn.classList.add('ready');
+    if(l==='ta') btn.textContent = 'உள்நுழைவுக்கு செல்லவும் →';
+    else if(l==='hi') btn.textContent = 'लॉगिन पर जाएं →';
+    else btn.textContent = 'Continue to Login →';
+  }
+  function goNext() { window.location.href = 'login.html'; }
+</script>
+</body>
+</html>
