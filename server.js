@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt   = require('bcryptjs');
 const jwt      = require('jsonwebtoken');
 const cors     = require('cors');
+const path     = require('path');
 require('dotenv').config();
 
 const { Farmer, Crop, Disease, Market, Weather } = require('./models');
@@ -13,6 +14,7 @@ const PORT = process.env.PORT || 5000;
 // MIDDLEWARE
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname));
 
 // CONNECT MONGODB
 mongoose.connect(process.env.MONGO_URI)
@@ -27,17 +29,10 @@ function auth(req, res, next){
   catch { res.status(401).json({message:'Invalid token.'}); }
 }
 
-// ── TEST ROUTE ──────────────────────────────────────────────
-app.get('/', (req, res) => res.json({
-  message:'🌾 AgroSense AI Backend is running!',
-  routes:{
-    auth:   ['POST /api/auth/register','POST /api/auth/login','GET /api/auth/profile'],
-    crop:   ['POST /api/crop/save','GET /api/crop/history'],
-    disease:['POST /api/disease/save','GET /api/disease/history'],
-    market: ['GET /api/market/prices','POST /api/market/update'],
-    weather:['POST /api/weather/save','GET /api/weather/:city']
-  }
-}));
+// ── HOME ROUTE ──────────────────────────────────────────────
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'login.html'));
+});
 
 // ── AUTH ROUTES ─────────────────────────────────────────────
 app.post('/api/auth/register', async (req,res) => {
